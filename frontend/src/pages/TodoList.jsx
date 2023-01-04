@@ -1,20 +1,23 @@
 import React from 'react'
 import axios from "axios"
-import { useState } from 'react'
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useFetch from '../hooks/useFetch';
+import { Link } from 'react-router-dom';
 
 
-function TodoList({ todos }) {
 
-  const [message, setMessage] = useState('')
+function TodoList() {
 
+  
+const {data:todos, error, loading} = useFetch("http://localhost:8000/v1/todos")
   const handleDelete = async (id) => {
     try {
       const url = `http://localhost:8000/v1/delete-todo/${id}`
 
       const res = await axios.delete(url);
-      setMessage(res.data);
+     
       toast.success(res.data, {
         position: "top-left",
         autoClose: 2000,
@@ -25,6 +28,8 @@ function TodoList({ todos }) {
         progress: undefined,
         theme: "colored",
         });
+       
+       
     } catch (error) {
       console.log({error});
       toast.success(error.message, {
@@ -53,7 +58,7 @@ function TodoList({ todos }) {
 
                 <div className='control-btns'>
                   <button className='btn btn-success'><i className="bi bi-eye-fill"></i></button>
-                  <button className='btn btn-primary mx-2'><i className="bi bi-pencil-square"></i></button>
+                  <Link to={`/${todo._id}`} className='btn btn-primary mx-2'><i className="bi bi-pencil-square"></i></Link>
                   <button className='btn btn-danger' onClick={() => handleDelete(todo._id)}><i className="bi bi-trash3"></i></button>
                 </div>
 
