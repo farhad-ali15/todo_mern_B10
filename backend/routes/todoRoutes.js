@@ -1,17 +1,19 @@
 import express from "express";
 import {
     createTodo,getAllTodos,updateTodo,deleteTodo,getTodoById
-  } from '../controllers/todoController.js'
+  } from '../controllers/todoController.js';
+  
+  import  {isAuthorizedUser,isAuthenticatedUser}  from "../middlewares/authHandler.js";
   
 
-const todoRouter = express.Router()
+const todoRouter = express.Router();
 
 
-todoRouter.route('/v1/todo/new-todo/').post(createTodo)
-todoRouter.route('/v1/todos').get(getAllTodos)
-todoRouter.route('/v1/todo/:id').get(getTodoById)
-todoRouter.route('/v1/update-todo/:id').put(updateTodo)
-todoRouter.route('/v1/delete-todo/:id').delete(deleteTodo)
+todoRouter.route('/todo/new-todo/').post(isAuthenticatedUser,createTodo);
+todoRouter.route('/todos').get(isAuthenticatedUser, isAuthorizedUser("user", "students", "admin", "teacher"),getAllTodos);
+todoRouter.route('/todo/:id').get(isAuthenticatedUser, isAuthorizedUser("user", "students", "admin", "teacher"),getTodoById);
+todoRouter.route('/update-todo/:id').put(isAuthenticatedUser, isAuthorizedUser( "admin"), updateTodo);
+todoRouter.route('/delete-todo/:id').delete(isAuthenticatedUser, isAuthorizedUser( "admin"), deleteTodo);
 
 
 export default todoRouter

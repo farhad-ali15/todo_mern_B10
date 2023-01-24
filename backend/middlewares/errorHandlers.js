@@ -1,5 +1,14 @@
+
+
+
 export const errorHandler = (err, req, res, next)=>{
-let error = {...err}
+let error = {...err};
+error.message = err.message;
+
+
+
+
+
 // wrong mongoose object id error
 if ( err.name === "CastError"){
 const message = `Resource not found. invalid: ${error.path}`

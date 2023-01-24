@@ -1,9 +1,9 @@
-import { todos } from "../model/todoSchema.js"
+import { Todos } from "../model/todoSchema.js"
 
 export const createTodo = async (req, res , next) => {
   
 try{
-  await todos.create(req.body);
+  await Todos.create(req.body);
 
   res.json(req.body)
 
@@ -18,21 +18,21 @@ try{
 }
 export const getAllTodos = async (req, res , next) => {
 
-   const allTodos = await todos.find();
+   const allTodos = await Todos.find();
   res.json(allTodos)
 
 }
 
 export const updateTodo = async (req, res, next) => {
   const {id} = req.params
-const todo = await todos.findByIdAndUpdate(id,req.body)
+const todo = await Todos.findByIdAndUpdate(id,req.body)
   res.send(todo)
 
 }
 
 export const getTodoById = async (req, res, next) => {
   const {id} = req.params
-  const todo = await todos.findById(id)
+  const todo = await Todos.findById(id)
 
 
   res.send(todo)
@@ -42,7 +42,7 @@ export const getTodoById = async (req, res, next) => {
 export const deleteTodo = async (req, res, next) => {
   try{
     const {id} = req.params
-  await todos.findByIdAndDelete(id);
+  await Todos.findByIdAndDelete(id);
 
   res.send("todo deleted")
 
